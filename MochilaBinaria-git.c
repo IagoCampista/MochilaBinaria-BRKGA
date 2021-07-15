@@ -8,14 +8,21 @@ typedef struct item{
     int peso, ganho;
 } item;
 
+typedef struct individuo{
+    int peso_total, ganho_total;
+} individuo;
+
 void imprimir_elementos(item *vetor, int qtd_max);
 void criar_geracao_inicial (int qtd_itens, int **geracao_de_individuos);
-void imprimir_matriz(int qtd_itens, int **geracao_de_individuos);
+void imprimir_matriz(int qtd_itens, int **geracao_de_individuos, individuo *dados_individuos);
+void preencher_dados (int qtd_itens, int **geracao_de_individuos, individuo *dados_individuos, item *elementos);
+
 
 int main (){
 
     int capacidade_maxima_mochila, i, aux1, aux2, qtd_itens;
     FILE *mochila;
+    individuo dados_individuos[QTD_INDIVIDUOS];
 
     // Ler o arquivo mochila.txt e armazena num vetor de struct de itens
     mochila = fopen ("mochila.txt", "r");
@@ -47,11 +54,11 @@ int main (){
     criar_geracao_inicial(qtd_itens, geracao_de_individuos);//atribui aleatoriamente valores 0 ou 1 em cada posicao
     //---------------------------------------------------
 
-
+    preencher_dados (qtd_itens, geracao_de_individuos, dados_individuos, elementos);
 
     imprimir_elementos(elementos, qtd_itens);    
 
-    imprimir_matriz(qtd_itens, geracao_de_individuos);
+    imprimir_matriz(qtd_itens, geracao_de_individuos, dados_individuos);
     
     fclose(mochila);
     free(geracao_de_individuos);
@@ -75,14 +82,30 @@ void criar_geracao_inicial (int qtd_itens, int **geracao_de_individuos){
     }
 }
 
-void imprimir_matriz(int qtd_itens, int **geracao_de_individuos){
+void imprimir_matriz(int qtd_itens, int **geracao_de_individuos, individuo *dados_individuos){
     int i, j;
     for (i=0; i<QTD_INDIVIDUOS; i++){
         printf("[");
         for (j=0; j<qtd_itens; j++){
             printf(" %d", geracao_de_individuos[i][j]);
         }
-        printf("]\n");
+        printf("]   Peso total: %d    Ganho Total %d\n", dados_individuos[i].peso_total, dados_individuos[i].ganho_total);
     }
     printf("\n\n");
+}
+
+void preencher_dados (int qtd_itens, int **geracao_de_individuos, individuo *dados_individuos, item *elementos){
+    int i, j, soma_peso, soma_ganho;
+    for (i=0; i<QTD_INDIVIDUOS; i++){
+        soma_peso = 0;
+        soma_ganho = 0;
+        for (j=0; j<qtd_itens; j++){
+            if(geracao_de_individuos[i][j] == 1){
+                soma_peso = soma_peso + elementos[i].peso;
+                soma_ganho = soma_ganho +elementos[i].ganho;
+            } 
+        }
+        dados_individuos[i].peso_total = soma_peso;
+        dados_individuos[i].ganho_total = soma_ganho;
+    }
 }
