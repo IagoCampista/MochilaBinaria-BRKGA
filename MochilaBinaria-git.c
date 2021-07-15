@@ -89,7 +89,7 @@ void imprimir_matriz(int qtd_itens, int **geracao_de_individuos, individuo *dado
         for (j=0; j<qtd_itens; j++){
             printf(" %d", geracao_de_individuos[i][j]);
         }
-        printf("]   Peso total: %d    Ganho Total %d\n", dados_individuos[i].peso_total, dados_individuos[i].ganho_total);
+        printf("]   Ganho Total %d       Peso total: %d \n", dados_individuos[i].peso_total, dados_individuos[i].ganho_total);
     }
     printf("\n\n");
 }
@@ -101,7 +101,6 @@ void preencher_dados (int qtd_itens, int **geracao_de_individuos, individuo *dad
         soma_ganho = 0;
         for (j=0; j<qtd_itens; j++){
             if(geracao_de_individuos[i][j] == 1){
-                printf("peso a ser calculado: %d    e ganho a ser calculado %d    somapeso %d    somaganho %d\n", elementos[j].peso, elementos[j].ganho, soma_peso, soma_ganho);
                 soma_peso = soma_peso + elementos[j].peso;
                 soma_ganho = soma_ganho +elementos[j].ganho;
             } 
