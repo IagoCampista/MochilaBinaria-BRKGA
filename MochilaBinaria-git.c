@@ -101,8 +101,9 @@ void preencher_dados (int qtd_itens, int **geracao_de_individuos, individuo *dad
         soma_ganho = 0;
         for (j=0; j<qtd_itens; j++){
             if(geracao_de_individuos[i][j] == 1){
-                soma_peso = soma_peso + elementos[i].peso;
-                soma_ganho = soma_ganho +elementos[i].ganho;
+                printf("peso a ser calculado: %d    e ganho a ser calculado %d    somapeso %d    somaganho %d\n", elementos[j].peso, elementos[j].ganho, soma_peso, soma_ganho);
+                soma_peso = soma_peso + elementos[j].peso;
+                soma_ganho = soma_ganho +elementos[j].ganho;
             } 
         }
         dados_individuos[i].peso_total = soma_peso;
