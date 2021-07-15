@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define  QTD_INDIVIDUOS  10
+#define  QTD_INDIVIDUOS  50
 #define  GERACOES  30
 
 typedef struct item{
@@ -89,7 +89,7 @@ void imprimir_matriz(int qtd_itens, int **geracao_de_individuos, individuo *dado
         for (j=0; j<qtd_itens; j++){
             printf(" %d", geracao_de_individuos[i][j]);
         }
-        printf("]   Ganho Total %d       Peso total: %d \n", dados_individuos[i].ganho_total, dados_individuos[i].peso_total);
+        printf("]   Ganho Total %.3d       Peso total: %.3d \n", dados_individuos[i].ganho_total, dados_individuos[i].peso_total);
     }
     printf("\n\n");
 }

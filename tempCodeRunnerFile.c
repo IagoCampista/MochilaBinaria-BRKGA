@@ -1,0 +1,1 @@
+printf("terminoud de ler\n\n");
