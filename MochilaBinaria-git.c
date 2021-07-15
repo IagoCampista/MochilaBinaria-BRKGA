@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define  QTD_INDIVIDUOS  50
+#define  QTD_INDIVIDUOS  10
 #define  GERACOES  30
 
 typedef struct item{
