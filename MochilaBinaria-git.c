@@ -16,6 +16,7 @@ int main (){
     int capacidade_maxima_mochila, i=0, qtd_itens;
     FILE *mochila;
     int *vetor_valor_itens, *vetor_peso_itens, **matriz_geracao;
+
     // Ler o arquivo mochila.txt e armazena num vetor de struct de itens
     mochila = fopen ("mochila.txt", "r");
     if(mochila == NULL){
@@ -43,6 +44,8 @@ int main (){
     mata_vetor(vetor_valor_itens);
     mata_matriz(matriz_geracao);
     return 0;
+
+    fclose(mochila);
 }
 
 void imprimir_elementos(int* vetor_valor_itens, int* vetor_peso_itens, int qtd_itens){
