@@ -1,113 +1,100 @@
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #define  QTD_INDIVIDUOS  10
-#define  GERACOES  30
+#define  GERACOES  10
 
-typedef struct item{
-    int peso, ganho;
-} item;
-
-typedef struct individuo{
-    int peso_total, ganho_total;
-} individuo;
-
-void imprimir_elementos(item *vetor, int qtd_max);
-void criar_geracao_inicial (int qtd_itens, int **geracao_de_individuos);
-void imprimir_matriz(int qtd_itens, int **geracao_de_individuos, individuo *dados_individuos);
-void preencher_dados (int qtd_itens, int **geracao_de_individuos, individuo *dados_individuos, item *elementos);
-
+void imprimir_elementos(int* vetor_valor_itens, int* vetor_peso_itens, int qtd_itens);
+void primeira_geracao(int* vetor_valor_itens, int* vetor_peso_itens, int** matriz_geracao, int qtd_itens, int capacidade_maxima_mochila);
+int* gera_vetor(int qtd_itens);
+int** gera_matriz(int qtd_itens);
+void mata_vetor(int* ponteiro);
+void mata_matriz(int** ponteiro);
 
 int main (){
 
-    int capacidade_maxima_mochila, i, aux1, aux2, qtd_itens;
+    int capacidade_maxima_mochila, i=0, qtd_itens;
     FILE *mochila;
-    individuo dados_individuos[QTD_INDIVIDUOS];
-
+    int *vetor_valor_itens, *vetor_peso_itens, **matriz_geracao;
     // Ler o arquivo mochila.txt e armazena num vetor de struct de itens
     mochila = fopen ("mochila.txt", "r");
     if(mochila == NULL){
         printf("Erro na abertura do arquivo\n\n");
         return 1;
     }
+
     fscanf(mochila, "%d %d", &capacidade_maxima_mochila, &qtd_itens);
     printf("Capacidade maxima da mochila: %d \t quantidade de itens: %d\n", capacidade_maxima_mochila, qtd_itens);
+
+    vetor_valor_itens = gera_vetor(qtd_itens);// cria um vetor de valor dos itens
+    vetor_peso_itens = gera_vetor(qtd_itens);// cria um vetor de peso dos itens
+    matriz_geracao = gera_matriz(qtd_itens);// cria uma matriz da prox geracao
     
-    item elementos[qtd_itens];// cria um vetor de elementos
-    i=0;
-   while(!feof(mochila)){
-        fscanf(mochila, "%d %d", &aux1, &aux2);
-        elementos[i].ganho=aux1;
-        elementos[i].peso = aux2;
+    while(!feof(mochila)){
+        fscanf(mochila, "%d %d", &vetor_valor_itens[i], &vetor_peso_itens[i]);
         i++;
     }
     //-------------Fim Leitura ----------------------
 
-    // ------------- Cria dinamicamente uma matriz em que cada linha sera um individuo (solução) ----------------------
-    i=0;
-    int **geracao_de_individuos = (int**) malloc(qtd_itens * sizeof(int*));
-    for(i=0; i<QTD_INDIVIDUOS; i++)
-    {
-        geracao_de_individuos[i] = (int*) malloc(qtd_itens * sizeof(int));
-    }
-
-    criar_geracao_inicial(qtd_itens, geracao_de_individuos);//atribui aleatoriamente valores 0 ou 1 em cada posicao
-    //---------------------------------------------------
-
-    preencher_dados (qtd_itens, geracao_de_individuos, dados_individuos, elementos);
-
-    imprimir_elementos(elementos, qtd_itens);    
-
-    imprimir_matriz(qtd_itens, geracao_de_individuos, dados_individuos);
+    imprimir_elementos(vetor_valor_itens, vetor_peso_itens, qtd_itens);
+    primeira_geracao(vetor_valor_itens, vetor_peso_itens, matriz_geracao, qtd_itens, capacidade_maxima_mochila); // geracao aleatoria
     
-    fclose(mochila);
-    free(geracao_de_individuos);
+    mata_vetor(vetor_peso_itens);
+    mata_vetor(vetor_valor_itens);
+    mata_matriz(matriz_geracao);
     return 0;
 }
 
-void imprimir_elementos(item *vetor, int qtd_itens){
+void imprimir_elementos(int* vetor_valor_itens, int* vetor_peso_itens, int qtd_itens){
     int i;
     for  (i=0; i<qtd_itens; i++){
-       printf("Elemento [%d]: ganho: %.2d \t peso: %.2d\n", i, vetor[i].ganho, vetor[i].peso);
+       printf("Elemento [%d]: valor: %.2d \t peso: %.2d\n", i, vetor_valor_itens[i], vetor_peso_itens[i]);
     }
 }
 
-void criar_geracao_inicial (int qtd_itens, int **geracao_de_individuos){
-    srand(time(0));
-    int i, j;
-    for (i=0; i<QTD_INDIVIDUOS; i++){
-        for (j=0; j<qtd_itens; j++){
-            geracao_de_individuos[i][j] = rand()%2;
-        }
+void primeira_geracao(int* vetor_valor_itens,int* vetor_peso_itens, int** matriz_geracao ,int qtd_itens, int capacidade_maxima_mochila){
+    int i, j, k, peso_total;
+    for(j = 0; j < QTD_INDIVIDUOS; j++){ //numero de cromossomos
+        do{
+            for(i = 0; i < qtd_itens; i++){//criar um cromossomo 
+                matriz_geracao[i][j] = rand()%2; //cada casa da matriz irá receber 0 ou 1 aleatoriamente
+            }
+            peso_total=0;
+            for(k = 0; k < qtd_itens; k++){ //apos criar um cromossomo
+
+                if(matriz_geracao[k][j] == 1) //verificar se aquele cromossomo tem determinado item 
+                {
+                    peso_total = peso_total + vetor_peso_itens[k];
+                }  
+            }
+        }while(peso_total > capacidade_maxima_mochila); //caso o cromossomo criado ultrapasse o peso limite deve-se criar outro cromossomo
     }
+
+    for(j=0; j<QTD_INDIVIDUOS; j++){ //imprimir todos os cromossomos 
+        for(i=0; i<qtd_itens; i++){
+            printf("%d", matriz_geracao[i][j]);
+        }
+        printf("\n");
+    }
+
 }
 
-void imprimir_matriz(int qtd_itens, int **geracao_de_individuos, individuo *dados_individuos){
-    int i, j;
-    for (i=0; i<QTD_INDIVIDUOS; i++){
-        printf("[");
-        for (j=0; j<qtd_itens; j++){
-            printf(" %d", geracao_de_individuos[i][j]);
-        }
-        printf("]   Ganho Total %.3d       Peso total: %.3d \n", dados_individuos[i].ganho_total, dados_individuos[i].peso_total);
-    }
-    printf("\n\n");
+int* gera_vetor(int tamanho){
+    int *vetor;
+    vetor = (int *)malloc(tamanho * sizeof(int));
+    return vetor;
 }
-
-void preencher_dados (int qtd_itens, int **geracao_de_individuos, individuo *dados_individuos, item *elementos){
-    int i, j, soma_peso, soma_ganho;
-    for (i=0; i<QTD_INDIVIDUOS; i++){
-        soma_peso = 0;
-        soma_ganho = 0;
-        for (j=0; j<qtd_itens; j++){
-            if(geracao_de_individuos[i][j] == 1){
-                soma_peso = soma_peso + elementos[j].peso;
-                soma_ganho = soma_ganho +elementos[j].ganho;
-            } 
-        }
-        dados_individuos[i].peso_total = soma_peso;
-        dados_individuos[i].ganho_total = soma_ganho;
+int** gera_matriz(int colunas){
+    int **vetor_de_vetor;
+    vetor_de_vetor = (int **)malloc(colunas * sizeof(int));
+    for(int i = 0; i < colunas; i++){
+        vetor_de_vetor[i] = gera_vetor(QTD_INDIVIDUOS);
     }
+    return vetor_de_vetor;
+}
+void mata_vetor(int* ponteiro){
+    free(ponteiro);
+}
+void mata_matriz(int** ponteiro){
+    free(ponteiro);
 }
