@@ -54,9 +54,6 @@ int main (){
     elite = aloca_matriz_zerada(qtd_itens, QTD_INDIVIDUOS/3); //porcetagem elitismo
     pai = aloca_vetor_zerado(qtd_itens);
     mae = aloca_vetor_zerado(qtd_itens);
-    
-
-   
 
     primeira_geracao(vetor_valor_itens, vetor_peso_itens, matriz_geracao, qtd_itens, capacidade_maxima_mochila); // geracao aleatoria
     copia_matriz(matriz_geracao, QTD_INDIVIDUOS, qtd_itens, matriz_duplicada);
@@ -113,7 +110,7 @@ void imprimir_elite_master(int** matriz, int* lista_valor, int qtd_itens){
         for(j=0; j < qtd_itens; j++){
             if(matriz[j][i]==1){
                 valores_elite = valores_elite + lista_valor[j]; 
-            }  
+            } 
         }
         
         for ( j = 0; j < qtd_itens; j++)
@@ -293,7 +290,5 @@ void imprimir_media_geracao(int** matriz, int* lista_valor, int qtd_itens){
     }
     media = soma/QTD_INDIVIDUOS;
     printf("%d",media);
-    printf("\n----------------\n");
-
-    
+    printf("\n----------------\n");    
 }
