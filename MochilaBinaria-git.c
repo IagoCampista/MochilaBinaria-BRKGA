@@ -47,13 +47,16 @@ int main (){
     }
     //-------------Fim Leitura ----------------------
 
+    imprimir_elementos(vetor_valor_itens, vetor_peso_itens, qtd_itens);
+
     matriz_geracao = aloca_matriz_zerada(qtd_itens, QTD_INDIVIDUOS);// cria uma matriz da prox geracao
     matriz_duplicada = aloca_matriz_zerada(qtd_itens, QTD_INDIVIDUOS);
+    elite = aloca_matriz_zerada(qtd_itens, QTD_INDIVIDUOS/3); //porcetagem elitismo
     pai = aloca_vetor_zerado(qtd_itens);
     mae = aloca_vetor_zerado(qtd_itens);
-    elite = aloca_matriz_zerada(qtd_itens, QTD_INDIVIDUOS/3); //porcetagem elitismo
+    
 
-    imprimir_elementos(vetor_valor_itens, vetor_peso_itens, qtd_itens);
+   
 
     primeira_geracao(vetor_valor_itens, vetor_peso_itens, matriz_geracao, qtd_itens, capacidade_maxima_mochila); // geracao aleatoria
     copia_matriz(matriz_geracao, QTD_INDIVIDUOS, qtd_itens, matriz_duplicada);
