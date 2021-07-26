@@ -48,6 +48,7 @@ int main (){
         fscanf(mochila, "%d %d", &lista_valor[i], &lista_peso[i]);
         i++;
     }
+    imprimir_elementos(lista_valor, lista_peso, qtd_itens);
     //-------------Fim Leitura ----------------------
 
     matriz_geracao = aloca_matriz_zerada(QTD_INDIVIDUOS, qtd_itens);// cria uma matriz da proxima geracao
@@ -55,7 +56,6 @@ int main (){
     pai = aloca_lista_float_zerada(qtd_itens);
     mae = aloca_lista_float_zerada(qtd_itens);
 
-    imprimir_elementos(lista_valor, lista_peso, qtd_itens);
     gerar_aleatorio(matriz_geracao, lista_peso, qtd_itens, capacidade_maxima_mochila, 0); // geracao aleatoria
     ordenar(matriz_geracao, lista_valor, qtd_itens);
     copia_matriz(matriz_geracao, matriz_duplicada, QTD_INDIVIDUOS, qtd_itens);
