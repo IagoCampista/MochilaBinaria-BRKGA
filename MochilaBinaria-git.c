@@ -76,9 +76,6 @@ int main (){
             decodificador(matriz_geracao, j, qtd_itens, lista_peso, lista_valor);
         }
     }
-    for(i = 0; i < ELITE; i++){
-        decodificador(matriz_duplicada, i, qtd_itens, lista_peso, lista_valor);
-    }
     mata_vetor_int(lista_peso);
     mata_vetor_int(lista_valor);
     mata_vetor_float(pai);
@@ -220,8 +217,7 @@ void filho(float** geracao_anterior, float* pai, float* mae, float* filho, int q
         else{
             filho[i] = mae[i];
         }
-    }
-        
+    }     
 }
 //ok
 void geracao(float** geracao, float** geracao_anterior, float* pai, float* mae, int lista_peso[], int qtd_itens, int capacidade_mochila){
