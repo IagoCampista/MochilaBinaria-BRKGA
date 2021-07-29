@@ -128,7 +128,7 @@ int* aloca_lista_int_zerada(int tamanho){
 //ok
 float** aloca_matriz_zerada(int colunas, int linhas){
     float **vetor_de_vetor;
-    vetor_de_vetor = (float*)malloc(colunas * sizeof(float));
+    vetor_de_vetor = (float**)malloc(colunas * sizeof(float*));
     for(int i = 0; i < colunas; i++){
         vetor_de_vetor[i] = aloca_lista_float_zerada(linhas);
     }
