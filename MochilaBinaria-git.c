@@ -64,13 +64,15 @@ int main (){
     for(i = 0; i < QTD_INDIVIDUOS; i++){
         decodificador(matriz_geracao, i, qtd_itens, lista_peso, lista_valor);
     }
+    printf("Media de valor da 1 Geracao:");
     imprimir_media_geracao(matriz_geracao, lista_valor, qtd_itens);
 
-    for(i = 0; i < GERACOES; i++){
+    for(i = 1; i < GERACOES; i++){
         geracao(matriz_geracao, matriz_duplicada, pai, mae, lista_peso, qtd_itens, capacidade_maxima_mochila);
         ordenar(matriz_geracao, lista_valor, qtd_itens);
         copia_matriz(matriz_geracao, matriz_duplicada, QTD_INDIVIDUOS, qtd_itens);
-        printf("Media de valor da %d Geracao:", i+2);
+        printf("\n----------------\n");
+        printf("Media de valor da %d Geracao:", i+1);
         imprimir_media_geracao(matriz_geracao, lista_valor, qtd_itens);
         for(int j = 0; j < ELITE; j++){
             decodificador(matriz_geracao, j, qtd_itens, lista_peso, lista_valor);
@@ -105,7 +107,7 @@ void imprimir_media_geracao(float** matriz, int* lista_valor, int qtd_itens){
     }
     media = soma/QTD_INDIVIDUOS;
     printf("%d",media);
-    printf("\n----------------\n");
+    
 }
 //ok
 float* aloca_lista_float_zerada(int tamanho){
